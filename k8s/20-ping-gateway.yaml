@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ping-gateway
+  namespace: content-api-aam-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-gateway
+  template:
+    metadata:
+      labels:
+        app: ping-gateway
+    spec:
+      containers:
+        - name: ping-gateway
+          image: us-docker.pkg.dev/forgeops-public/images-base/ig:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - "rm -f /var/gateway/tmp/ig.pid && exec /opt/gateway/bin/start.sh /var/gateway"
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: content-api-aam-demo-config
+            - secretRef:
+                name: content-api-aam-demo-secret
+          volumeMounts:
+            - name: ig-config
+              mountPath: /var/gateway/config
+              readOnly: true
+            - name: ig-instance
+              mountPath: /var/gateway/tmp
+      volumes:
+        - name: ig-config
+          configMap:
+            name: ping-gateway-routes
+            items:
+              - key: config.json
+                path: config.json
+              - key: aam-content-access.json
+                path: routes/aam-content-access.json
+        - name: ig-instance
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ping-gateway
+  namespace: content-api-aam-demo
+spec:
+  selector:
+    app: ping-gateway
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30036
+  type: NodePort

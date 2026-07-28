@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: content-api-aam-demo-config
+  namespace: content-api-aam-demo
+data:
+  PG_AAM_SERVICE_URL: "${PG_AAM_SERVICE_URL}"
+  PG_CONTENT_API_BACKEND_URL: "http://content-api:8080"
