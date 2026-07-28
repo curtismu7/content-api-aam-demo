@@ -77,6 +77,14 @@ through creating the API Service. This doc is the pickup point.
 
 ## Stuck / not yet done
 
+- **CURRENT BLOCKER: "Failed to build policy tree, try again later"** — hit
+  when clicking Enable Custom Policies on the API Service. Searched, no
+  documented cause or fix for this exact message anywhere in Ping's docs —
+  it's a generic backend error, not something pointing at a config mistake.
+  Tried a retry during this session, still stuck; this is where the session
+  stopped. Next time: retry again (maybe transient), and if it keeps
+  failing, this is a Ping support case, not a console-config problem to keep
+  digging at solo — no client-side lever found for it.
 - **API Service not saved/deployed yet** — Base URL needs fixing first (#3),
   then Save, then Deploy.
 - **Operations not yet added** — after the API Service exists, add under its
