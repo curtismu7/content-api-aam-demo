@@ -1,0 +1,201 @@
+# Age Related Access Authorization Policy
+#
+# Rules:
+#   1. Users over 18 in EMEA are permitted
+#   2. Users over 21 in USA are permitted
+#   3. Users over 16 in APAC are permitted
+#   4. All other requests are denied
+
+# ═══════════════════════════
+# POLICY MANAGER
+# ═══════════════════════════
+
+policyset AccessPolicies evaluate first-applicable:
+  description: "Root decision point access control"
+
+  policy AgePolicies evaluate first-applicable:
+    description: "Permit entry based on age and location requirements"
+
+    rule PermitByRegionAndAge permit:
+      or:
+        - and:
+            - Request.Age > 18
+            - Request.Location == "EMEA"
+        - and:
+            - Request.Age > 21
+            - Request.Location == "USA"
+        - and:
+            - Request.Age > 16
+            - Request.Location == "APAC"
+
+    rule DefaultDeny: deny
+
+# ═══════════════════════════
+# TRUST FRAMEWORK
+# ═══════════════════════════
+
+attributes:
+
+  attribute Name string:
+    resolve: request Name
+
+  attribute Request.Username string:
+    description: "Username of the person requesting access"
+    resolve: request username
+
+  attribute Request.Age number:
+    description: "Age of the person requesting access"
+    resolve: request age
+
+  attribute Request.Location string:
+    description: "Geographic region of the person requesting access (e.g. EMEA, USA, APAC)"
+    resolve: request location
+
+# ═══════════════════════════
+# TESTS
+# ═══════════════════════════
+
+tests:
+  test 'Permit EMEA user aged 19':
+    request:
+      attributes:
+        username: "alice"
+        age: 19
+        location: "EMEA"
+    expect:
+      decision: permit
+
+  test 'Deny EMEA user aged 17 (under 18)':
+    request:
+      attributes:
+        username: "charlie"
+        age: 17
+        location: "EMEA"
+    expect:
+      decision: deny
+
+  test 'Deny EMEA user aged 18 (not strictly over 18)':
+    request:
+      attributes:
+        username: "dana"
+        age: 18
+        location: "EMEA"
+    expect:
+      decision: deny
+
+  test 'Permit USA user aged 22':
+    request:
+      attributes:
+        username: "eve"
+        age: 22
+        location: "USA"
+    expect:
+      decision: permit
+
+  test 'Deny USA user aged 19 (over 18 but under 21)':
+    request:
+      attributes:
+        username: "frank"
+        age: 19
+        location: "USA"
+    expect:
+      decision: deny
+
+  test 'Deny USA user aged 21 (not strictly over 21)':
+    request:
+      attributes:
+        username: "grace"
+        age: 21
+        location: "USA"
+    expect:
+      decision: deny
+
+  test 'Deny unknown location regardless of age':
+    request:
+      attributes:
+        username: "henry"
+        age: 30
+        location: "OTHER"
+    expect:
+      decision: deny
+
+  test 'Permit APAC user aged 17':
+    request:
+      attributes:
+        username: "ivan"
+        age: 17
+        location: "APAC"
+    expect:
+      decision: permit
+
+  test 'Deny APAC user aged 16 (not strictly over 16)':
+    request:
+      attributes:
+        username: "jess"
+        age: 16
+        location: "APAC"
+    expect:
+      decision: deny
+
+  test 'Deny APAC user aged 15 (under 16)':
+    request:
+      attributes:
+        username: "kai"
+        age: 15
+        location: "APAC"
+    expect:
+      decision: deny
+
+  test 'Permit APAC user aged 16 boundary plus one':
+    request:
+      attributes:
+        username: "lena"
+        age: 17
+        location: "APAC"
+    expect:
+      decision: permit
+
+  test 'Permit APAC user aged 30 (well above threshold)':
+    request:
+      attributes:
+        username: "marco"
+        age: 30
+        location: "APAC"
+    expect:
+      decision: permit
+
+  test 'Deny APAC user aged 16 exact boundary':
+    request:
+      attributes:
+        username: "nina"
+        age: 16
+        location: "APAC"
+    expect:
+      decision: deny
+
+  test 'Permit EMEA user aged 30 (well above threshold)':
+    request:
+      attributes:
+        username: "omar"
+        age: 30
+        location: "EMEA"
+    expect:
+      decision: permit
+
+  test 'Permit USA user aged 30 (well above threshold)':
+    request:
+      attributes:
+        username: "petra"
+        age: 30
+        location: "USA"
+    expect:
+      decision: permit
+
+  test 'Deny empty location regardless of age':
+    request:
+      attributes:
+        username: "quinn"
+        age: 25
+        location: ""
+    expect:
+      decision: deny
