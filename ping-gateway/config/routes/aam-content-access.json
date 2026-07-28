@@ -1,0 +1,25 @@
+{
+  "name": "aam-content-access",
+  "condition": "${not empty env['PG_AAM_SERVICE_URL'] and find(request.uri.path, '^/aam')}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "AamDecision",
+          "type": "PingAuthorizeFilter",
+          "config": {
+            "gatewayServiceUri": "&{pg.aam.service.url|https://aam-not-configured.invalid}",
+            "secretsProvider": "SecretsStore",
+            "gatewayCredentialSecretId": "aam.gateway.secret"
+          }
+        }
+      ],
+      "handler": {
+        "type": "ReverseProxyHandler",
+        "baseURI": "${empty env['PG_CONTENT_API_BACKEND_URL'] ? 'http://content-api:8080' : env['PG_CONTENT_API_BACKEND_URL']}",
+        "config": {}
+      }
+    }
+  }
+}

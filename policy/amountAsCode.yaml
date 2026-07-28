@@ -1,0 +1,45 @@
+# New PAC policy
+# check an amount to see if its allowed without MFA
+# for now just return permit deny on allowed amount
+
+#
+# Policy
+#
+policyset AmountPolicies evaluate first-applicable:
+  description: "Root decision point access control"
+
+  policy ValuePolicies evaluate first-applicable:
+    description: "Permit entry based on amount"
+    rule PermitAmount permit:
+     - Request.Amount < 100
+
+    rule DenyAmount deny:
+    - Request.Amount > 100
+   
+
+# ═══════════════════════════
+# TRUST FRAMEWORK
+# ═══════════════════════════
+attributes:
+
+ attribute Request.Amount number:
+    description: "Amount in the request"
+    resolve: request amount
+
+# ---------------------------
+# TESTS
+# ---------------------------
+tests:
+  test 'Permit amount less than 100':
+    request:
+      attributes:
+        amount: "10"
+    expect:
+      decision: permit
+  test 'deny over 100':
+    request:
+      attributes:
+        amount: "150"
+    expect:
+      decision: deny
+ 

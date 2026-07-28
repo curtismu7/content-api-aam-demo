@@ -1,0 +1,10 @@
+{
+  "heap": [
+    {
+      "name": "SecretsStore",
+      "type": "SystemAndEnvSecretStore",
+      "config": { "format": "PLAIN" }
+    }
+  ],
+  "handler": { "type": "Router" }
+}

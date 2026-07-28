@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    resolver ${NGINX_RESOLVER} valid=10s;
+
+    location /aam/ {
+        set $upstream_gateway http://ping-gateway:8080;
+        proxy_pass $upstream_gateway/aam/;
+        proxy_set_header Host $host;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

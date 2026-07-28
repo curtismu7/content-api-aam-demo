@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-page
+  namespace: content-api-aam-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-page
+  template:
+    metadata:
+      labels:
+        app: demo-page
+    spec:
+      containers:
+        - name: demo-page
+          image: "${IMAGE_REGISTRY}content-api-aam-demo-demo-page:${IMAGE_TAG}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-page
+  namespace: content-api-aam-demo
+spec:
+  selector:
+    app: demo-page
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+  type: NodePort

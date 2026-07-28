@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Content API AAM Demo</title>
+</head>
+<body>
+  <h1>Content API — PingOne Authorize AAM Demo</h1>
+  <form id="scenario-form">
+    <label>Content item ID (blank = list all)
+      <input type="text" name="itemId" placeholder="e.g. glass-frontier" />
+    </label>
+    <label>X-Demo-Amount
+      <input type="text" name="amount" placeholder="e.g. 50" />
+    </label>
+    <label>X-Demo-Age
+      <input type="text" name="age" placeholder="e.g. 25" />
+    </label>
+    <label>X-Demo-Location
+      <input type="text" name="location" placeholder="EMEA / USA / APAC" />
+    </label>
+    <button type="submit">Send request</button>
+  </form>
+  <pre id="result"></pre>
+  <script src="format.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
