@@ -1,0 +1,12 @@
+[
+  { "id": "the-last-circuit", "title": "The Last Circuit", "minAge": 13, "price": 50, "description": "A hacker duo race to stop a rogue AI trading algorithm." },
+  { "id": "neon-horizon", "title": "Neon Horizon", "minAge": 16, "price": 75, "description": "A courier navigates a neon-lit megacity chasing a stolen prototype." },
+  { "id": "quantum-heist", "title": "Quantum Heist", "minAge": 18, "price": 120, "description": "A crew attempts to rob a bank that exists in two timelines at once." },
+  { "id": "midnight-protocol", "title": "Midnight Protocol", "minAge": 21, "price": 45, "description": "A retired spy is pulled back in for one last data extraction." },
+  { "id": "silent-ledger", "title": "Silent Ledger", "minAge": 18, "price": 200, "description": "An auditor uncovers a conspiracy hidden inside a bank's transaction logs." },
+  { "id": "the-analyst", "title": "The Analyst", "minAge": 16, "price": 30, "description": "A junior analyst spots a pattern nobody else believes is real." },
+  { "id": "zero-trust", "title": "Zero Trust", "minAge": 21, "price": 150, "description": "A security team locks down a compromised network from the inside out." },
+  { "id": "paper-moon-rising", "title": "Paper Moon Rising", "minAge": 13, "price": 20, "description": "Two siblings run a small con across a chain of struggling towns." },
+  { "id": "glass-frontier", "title": "Glass Frontier", "minAge": 18, "price": 99, "description": "Settlers on a transparent orbital station face a structural crisis." },
+  { "id": "echo-chamber", "title": "Echo Chamber", "minAge": 21, "price": 101, "description": "A journalist traces a disinformation campaign back to its source." }
+]
