@@ -21,19 +21,12 @@ Before this demo can PERMIT anything, configure in your PingOne Authorize tenant
 2. Create an API Gateway + Credential under that group. Note its Service URL
    and Credential value.
 3. Create an API Service pointed at the `ContentAPIDecisionPoint` decision
-   point (see `snapshots/content-api-decision-point.json` once restored --
-   see note below), with operations covering: `GET /aam/health`,
-   `GET /aam/content`, `GET /aam/content/{id}`.
+   point (see `snapshots/content-api-decision-point.json`), with operations
+   covering: `GET /aam/health`, `GET /aam/content`, `GET /aam/content/{id}`.
 4. Confirm the decision point's policy (authored from `policy/restrictions.yaml`
    and `policy/amountAsCode.yaml`) evaluates `Request.Amount`, `Request.Age`,
    and `Request.Location` by reading them from request headers -- this demo
    sends `X-Demo-Amount`, `X-Demo-Age`, `X-Demo-Location` on every request.
-
-**Note:** `snapshots/content-api-decision-point.json` and `snapshots/content-api.zip`
-(the actual PingOne Authorize decision point export) are not yet in this repo --
-the source files went missing from the AI-DEMO2 working tree mid-build. Restore
-them into `snapshots/` once you have a copy; everything else in this repo works
-without them, they're reference/backup only.
 
 ## Environment variables
 
